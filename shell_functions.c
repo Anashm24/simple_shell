@@ -55,3 +55,39 @@ _exit(EXIT_FAILURE);
 }
 _exit(EXIT_FAILURE);
 }
+
+/**
+ * readInput - Reads a command line of input from the user.
+ * Return: A pointer to the string containing user input.
+ */
+
+char *readInput()
+{
+char *command = NULL;
+size_t len = 0;
+int n;
+if (isatty(STDIN_FILENO))
+{
+write(STDOUT_FILENO, "$ ", 2);
+}
+n = getline(&command, &len, stdin);
+
+if (n == -1 || (n == 0 && command[0] == '\n'))
+{
+write(STDOUT_FILENO, "\n", 1);
+free(command);
+_exit(EXIT_FAILURE);
+}
+
+int length = 0;
+while (command[length] != '\0')
+{
+length++;
+}
+
+if (command[length - 1] == '\n')
+{
+command[length - 1] = '\0';
+}
+return (command);
+}
