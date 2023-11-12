@@ -91,3 +91,45 @@ command[length - 1] = '\0';
 }
 return (command);
 }
+
+/**
+ * handleCommands - Handles user commands in a loop.
+ * @path: Array of paths to search for executables.
+ */
+
+void handleCommands(char *path[])
+{
+while (1)
+{
+char *command = readInput();
+if (!isatty(STDIN_FILENO) && command[0] == '\0')
+{
+free(command);
+break;
+}
+pid_t pid = fork();
+
+if (pid == -1)
+{
+perror("Fork failed");
+free(command);
+_exit(EXIT_FAILURE);
+}
+if (isatty(STDIN_FILENO) && _strcmp(command, "exit") == 0)
+{
+free(command);
+_exit(EXIT_SUCCESS);
+}
+
+if (pid == 0)
+{
+executeCommand(command, path);
+}
+else
+{
+int status;
+wait(&status);
+}
+free(command);
+}
+}
