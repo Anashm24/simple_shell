@@ -10,15 +10,15 @@
 
 #define MAX_ARGS 20
 
-extern char *environ;
+extern char **environ;
 
-void _strcpy(chardest, const char src);
-void _strcat(chardest, const char src);
-int _strcmp(charstr1, char str2);
-size_t _strlen(const charstr);
-void executeCommand(char command, charpath[]);
-char readInput();
-void handleCommands(charpath[]);
+void _strcpy(char *dest, const char *src);
+void _strcat(char *dest, const char *src);
+int _strcmp(char *str1, char *str2);
+size_t _strlen(const char *str);
+void executeCommand(char *command, char *path[]);
+char *readInput();
+void handleCommands(char *path[]);
 int main(void);
 
 #endif
