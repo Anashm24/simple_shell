@@ -73,3 +73,30 @@ str++;
 return (length);
 }
 
+/**
+ * _strncmp - Compares at most the first n bytes of str1 and str2.
+ * @str1: The first string to be compared.
+ * @str2: The second string to be compared.
+ * @n: The maximum number of characters to be compared.
+ *
+ * Return: If str1 < str2, the function returns a negative number.
+ *         If str1 > str2, the function returns a positive number.
+ *         If str1 == str2, the function returns 0.
+ */
+int _strncmp(const char *str1, const char *str2, size_t n)
+{
+while (n--)
+{
+if (*str1 != *str2)
+{
+return (*(unsigned char *)str1 - *(unsigned char *)str2);
+}
+else if (*str1 == '\0')
+{
+return (0);
+}
+str1++;
+str2++;
+}
+return (0);
+}
