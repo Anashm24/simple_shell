@@ -9,7 +9,7 @@
 
 int main(void)
 {
-char *path_env = getenv("PATH");
+char *path_env = _getenv("PATH");
 
 if (path_env == NULL)
 {

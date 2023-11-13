@@ -16,9 +16,11 @@ void _strcpy(char *dest, const char *src);
 void _strcat(char *dest, const char *src);
 int _strcmp(char *str1, char *str2);
 size_t _strlen(const char *str);
+int _strncmp(const char *str1, const char *str2, size_t n);
 void executeCommand(char *command, char *path[]);
 char *readInput();
 void handleCommands(char *path[]);
+char *_getenv(const char *target_key);
 int main(void);
 
 #endif
