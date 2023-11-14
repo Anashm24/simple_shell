@@ -1,24 +1,6 @@
 #include "main.h"
 
 /**
-*handle_env - Display the current environment variables.
-*/
-
-void handle_env(void)
-{
-char **env = environ;
-
-
-while (*env != NULL)
-{
-write(STDOUT_FILENO, *env, _strlen(*env));
-write(STDOUT_FILENO, "\n", 1);
-env++;
-}
-_exit(EXIT_SUCCESS);
-}
-
-/**
  *handle_setenv - Handle the "setenv" command and set environment variables.
  *@args: An array of strings representing
  *the "setenv" command and its arguments.
@@ -125,6 +107,12 @@ _exit(status);
 }
 free(args);
 }
+
+/**
+ * excutebin - Execute a binary file.
+ * @command: A string representing the command to be executed.
+ *
+ */
 
 void excutebin(char *command)
 {

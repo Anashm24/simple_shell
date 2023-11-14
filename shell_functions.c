@@ -41,10 +41,6 @@ if (_strcmp(command, "/bin/ls") == 0)
 {
 excutebin(command);
 }
-if (_strcmp(args[0], "env") == 0)
-{
-handle_env();
-}
 else if (_strcmp(args[0], "setenv") == 0)
 {
 handle_setenv(args, count_arg);
