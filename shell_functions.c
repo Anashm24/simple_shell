@@ -45,7 +45,7 @@ handle_unsetenv(args, count_arg);
 }
 else
 {
-excute_cmd(path, args);
+execute_cmd(path, args);
 }
 _exit(EXIT_FAILURE);
 }

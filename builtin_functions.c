@@ -1,5 +1,10 @@
 #include "main.h"
 
+/**
+*handle_env - Display the current environment variables.
+*@args: An array of strings representing the command and its arguments.
+*/
+
 void handle_env(char *args[])
 {
 char **env = environ;
@@ -14,6 +19,12 @@ env++;
 _exit(EXIT_SUCCESS);
 }
 
+/**
+ *handle_setenv - Handle the "setenv" command and set environment variables.
+ *@args: An array of strings representing
+ *the "setenv" command and its arguments.
+ *@count_arg: The number of arguments provided.
+ */
 
 void handle_setenv(char *args[], int count_arg)
 {
@@ -38,6 +49,11 @@ printf("%s\n", environ[i]);
 _exit(EXIT_SUCCESS);
 }
 
+/**
+ *handle_unsetenv - Remove an environment variable.
+ *@args: An array of strings representing the command and its arguments.
+ *@count_arg: The number of arguments provided with the command.
+ */
 void handle_unsetenv(char *args[], int count_arg)
 {
 char error_message[] = "Usage: unsetenv VARIABLE\n";
@@ -60,46 +76,49 @@ printf("%s\n", environ[i]);
 _exit(EXIT_SUCCESS);
 }
 
+/**
+ *exit_status - Handle the "exit" command and set the exit status.
+ *@command: A string representing the "exit" command and its arguments.
+ */
+
 void exit_status(char *command)
 {
-       char *token;
-    int i = 0, x = 0;
-    char **args = malloc(sizeof(char *) * 2);
+char *token;
+int i = 0, x = 0;
+char **args = malloc(sizeof(char *) * 2);
 
-    token = strtok(command," ");
+token = _strtok(command, " ");
 
-    while (token)
-    {
-        args[x] = token;
-        x++;
-        token = strtok(NULL, " ");
-    }
-    char *second_word = args[1];
+while (token)
+{
+args[x] = token;
+x++;
+token = _strtok(NULL, " ");
+}
+char *second_word = args[1];
 
-
-
-    if (strcmp(args[0], "exit") == 0 && second_word == NULL)
-    {
-        free(args);
-        _exit(EXIT_SUCCESS);
-    }
-
-    int status = 0;
-    if (second_word != NULL)
-    {
-        while (*second_word != '\0')
-        {
-            if (*second_word < '0' || *second_word > '9') {
-                perror("exit: numeric argument required\n");
-            }
-            status = status * 10 + *second_word - '0';
-            second_word++;
-        }
-    }
-    if (second_word != NULL)
-    {
-        free(args);
-        _exit(status);
-    }
-    free(args);
+if (strcmp(args[0], "exit") == 0 && second_word == NULL)
+{
+free(args);
+_exit(EXIT_SUCCESS);
+}
+int status = 0;
+if (second_word != NULL)
+{
+while (*second_word != '\0')
+{
+if (*second_word < '0' || *second_word > '9')
+{
+perror("exit: numeric argument required\n");
+}
+status = status * 10 + *second_word - '0';
+second_word++;
+}
+}
+if (second_word != NULL)
+{
+free(args);
+_exit(status);
+}
+free(args);
 }

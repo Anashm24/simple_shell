@@ -90,10 +90,18 @@ return (token);
 }
 }
 
-void excute_cmd(char *path[], char *args[])
+/**
+ * execute_cmd - Execute a command by searching for its executable file
+ *                in the specified paths.
+ * @path: An array of strings representing the directories to search for
+ *        the executable file.
+ * @args: An array of strings representing the command and its arguments.
+ */
+
+void execute_cmd(char *path[], char *args[])
 {
 char **env = environ;
-    for (int i = 0; path[i] != NULL; i++)
+for (int i = 0; path[i] != NULL; i++)
 {
 char command_path[1024];
 _strcpy(command_path, path[i]);

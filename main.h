@@ -19,7 +19,7 @@ size_t _strlen(const char *str);
 int _strncmp(const char *str1, const char *str2, size_t n);
 char *_strpbrk(char *str, const char *delimiter);
 void executeCommand(char *command, char *path[]);
-void excute_cmd(char *path[], char *args[]);
+void execute_cmd(char *path[], char *args[]);
 char *readInput();
 void handle_env(char *args[]);
 void handle_setenv(char *args[], int count_arg);
