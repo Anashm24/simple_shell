@@ -164,7 +164,7 @@ return (-1);
 if (character == '\n')
 break;
 }
-if (ret == 0 && i == 0) 
+if (ret == 0 && i == 0)
 return (-1);
 
 (*line)[i] = '\0';
