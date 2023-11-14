@@ -111,7 +111,10 @@ if (isatty(STDIN_FILENO) && _strcmp(command, "exit") == 0)
 {
 exit_status(command);
 }
-
+if (_strcmp(command, "/bin/ls") == 0)
+{
+excutebin(command);
+}
 if (pid == 0)
 {
 executeCommand(command, path);

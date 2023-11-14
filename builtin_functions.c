@@ -88,7 +88,7 @@ char *token;
 int x = 0;
 int status;
 char *second_word;
-char **args = malloc(sizeof(char *) * 2);
+char **args = malloc(sizeof(char *) * 10);
 
 token = _strtok(command, " ");
 
@@ -124,4 +124,22 @@ free(args);
 _exit(status);
 }
 free(args);
+}
+
+void excutebin(char *command)
+{
+
+char *token;
+int x = 0;
+char **args = malloc(sizeof(char *) * 10);
+token = _strtok(command, " ");
+
+while (token)
+{
+args[x] = token;
+x++;
+token = _strtok(NULL, " ");
+}
+execve(args[0], args, NULL);
+
 }

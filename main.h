@@ -30,5 +30,6 @@ char *_strtok(char *str, const char *delimiter);
 void exit_status(char *command);
 int main(void);
 ssize_t _getline(char **line, size_t *n_ch, int fd);
+void excutebin(char *command);
 
 #endif
