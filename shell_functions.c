@@ -16,12 +16,11 @@ void executeCommand(char *command, char *path[])
 {
 char *args[MAX_ARGS];
 int count_arg = 0;
-char **env = environ;
-char *token = strtok(command, " ");
+char *token = _strtok(command, " ");
 while (token != NULL && count_arg < MAX_ARGS - 1)
 {
 args[count_arg] = token;
-token = strtok(NULL, " ");
+token = _strtok(NULL, " ");
 count_arg++;
 }
 
@@ -34,24 +33,19 @@ args[count_arg] = NULL;
 
 if (_strcmp(args[0], "env") == 0)
 {
-while (*env != NULL)
-{
-write(STDOUT_FILENO, *env, _strlen(*env));
-write(STDOUT_FILENO, "\n", 1);
-env++;
+handle_env(args);
 }
-_exit(EXIT_SUCCESS);
-}
-for (int i = 0; path[i] != NULL; i++)
+else if (_strcmp(args[0], "setenv") == 0)
 {
-char command_path[1024];
-_strcpy(command_path, path[i]);
-_strcat(command_path, "/");
-_strcat(command_path, args[0]);
-if (access(command_path, X_OK) != -1 && execve(command_path, args, env) == -1)
-{
-_exit(EXIT_FAILURE);
+handle_setenv(args, count_arg);
 }
+else if (_strcmp(args[0], "unsetenv") == 0)
+{
+handle_unsetenv(args, count_arg);
+}
+else
+{
+excute_cmd(path,args);
 }
 _exit(EXIT_FAILURE);
 }

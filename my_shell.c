@@ -19,12 +19,12 @@ return (EXIT_FAILURE);
 
 char *path[MAX_ARGS];
 int i = 0;
-char *token = strtok(path_env, ":");
+char *token = _strtok(path_env, ":");
 
 while (token != NULL && i < MAX_ARGS - 1)
 {
 path[i++] = token;
-token = strtok(NULL, ":");
+token = _strtok(NULL, ":");
 }
 path[i] = NULL;
 
