@@ -105,3 +105,52 @@ _exit(EXIT_FAILURE);
 }
 }
 }
+/**
+ * _getline - Reads a line of text from a file descriptor.
+ * @line: A pointer to the buffer where the line will be stored.
+ * @n_ch: A pointer to the size of the buffer.
+ * @fd: The file descriptor to read from.
+ *
+ * Return: If the line is read successfully, returns the number of characters
+ *         read. If an error occurs, returns -1. If the end of the file is
+ *         reached before any characters are read, returns 0.
+ */
+ssize_t _getline(char **line, size_t *n_ch, int fd)
+{
+char character;
+int i = 0;
+
+if (*line == NULL || n_ch == NULL)
+{
+*n_ch = 80;
+*line = malloc(sizeof(char) * (*n_ch));
+
+if (*line == NULL)
+{
+perror("malloc failed");
+return (-1);
+}
+}
+
+while (read(fd, &character, 1) > 0)
+{
+(*line)[i] = character;
+i++;
+
+if (i > *n_ch)
+{
+*n_ch *= 2;
+*line = realloc(*line, *n_ch);
+if (*line == NULL)
+{
+perror("realloc failed");
+return (-1);
+}
+}
+if (character == '\n')
+break;
+}
+
+(*line)[i] = '\0';
+return (i);
+}

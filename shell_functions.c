@@ -45,7 +45,7 @@ handle_unsetenv(args, count_arg);
 }
 else
 {
-excute_cmd(path,args);
+excute_cmd(path, args);
 }
 _exit(EXIT_FAILURE);
 }
@@ -64,7 +64,7 @@ if (isatty(STDIN_FILENO))
 {
 write(STDOUT_FILENO, "$ ", 2);
 }
-n = getline(&command, &len, stdin);
+n = _getline(&command, &len, 0);
 
 if (n == -1 || (n == 0 && command[0] == '\n'))
 {
@@ -111,8 +111,7 @@ _exit(EXIT_FAILURE);
 }
 if (isatty(STDIN_FILENO) && _strcmp(command, "exit") == 0)
 {
-free(command);
-_exit(EXIT_SUCCESS);
+exit_status(command);
 }
 
 if (pid == 0)

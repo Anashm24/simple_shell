@@ -59,3 +59,47 @@ printf("%s\n", environ[i]);
 }
 _exit(EXIT_SUCCESS);
 }
+
+void exit_status(char *command)
+{
+       char *token;
+    int i = 0, x = 0;
+    char **args = malloc(sizeof(char *) * 2);
+
+    token = strtok(command," ");
+
+    while (token)
+    {
+        args[x] = token;
+        x++;
+        token = strtok(NULL, " ");
+    }
+    char *second_word = args[1];
+
+
+
+    if (strcmp(args[0], "exit") == 0 && second_word == NULL)
+    {
+        free(args);
+        _exit(EXIT_SUCCESS);
+    }
+
+    int status = 0;
+    if (second_word != NULL)
+    {
+        while (*second_word != '\0')
+        {
+            if (*second_word < '0' || *second_word > '9') {
+                perror("exit: numeric argument required\n");
+            }
+            status = status * 10 + *second_word - '0';
+            second_word++;
+        }
+    }
+    if (second_word != NULL)
+    {
+        free(args);
+        _exit(status);
+    }
+    free(args);
+}

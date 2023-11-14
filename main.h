@@ -27,6 +27,8 @@ void handle_unsetenv(char *args[], int count_arg);
 void handleCommands(char *path[]);
 char *_getenv(const char *target_key);
 char *_strtok(char *str, const char *delimiter);
+void exit_status(char *command);
 int main(void);
+ssize_t _getline(char **line, size_t *n_ch, int fd);
 
 #endif
