@@ -65,7 +65,7 @@ if (isatty(STDIN_FILENO))
 {
 write(STDOUT_FILENO, "$ ", 2);
 }
-n = getline(&command, &len, stdin);
+n = _getline(&command, &len, STDIN_FILENO);
 
 if (n == -1 || (n == 0 && command[0] == '\n'))
 {
