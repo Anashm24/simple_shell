@@ -31,6 +31,10 @@ _exit(EXIT_FAILURE);
 }
 args[count_arg] = NULL;
 
+if (_strcmp(command, "/bin/ls") == 0)
+{
+excutebin(command);
+}
 if (_strcmp(args[0], "env") == 0)
 {
 handle_env();
@@ -110,10 +114,6 @@ _exit(EXIT_FAILURE);
 if (isatty(STDIN_FILENO) && _strcmp(command, "exit") == 0)
 {
 exit_status(command);
-}
-if (_strcmp(command, "/bin/ls") == 0)
-{
-excutebin(command);
 }
 if (pid == 0)
 {
