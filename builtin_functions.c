@@ -114,7 +114,8 @@ free(args);
  *
  */
 
-void excutebin(char *command)
+/**
+
 {
 
 char *token;
@@ -132,3 +133,4 @@ execve(args[0], args, NULL);
 free(args);
 _exit(EXIT_FAILURE);
 }
+*/

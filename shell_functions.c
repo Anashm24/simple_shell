@@ -9,10 +9,9 @@
 /**
  * executeCommand - Executes a command with specified arguments.
  * @command: Input command line.
- * @path: Array of paths to search for the executable.
  */
 
-void executeCommand(char *command, char *path[])
+void executeCommand(char *command)
 {
 char *args[MAX_ARGS];
 int count_arg = 0;
@@ -37,11 +36,8 @@ _exit(EXIT_FAILURE);
 }
 args[count_arg] = NULL;
 
-if (_strcmp(command, "/bin/ls") == 0)
-{
-excutebin(command);
-}
-else if (_strcmp(args[0], "setenv") == 0)
+
+if (_strcmp(args[0], "setenv") == 0)
 {
 handle_setenv(args, count_arg);
 }
@@ -51,7 +47,7 @@ handle_unsetenv(args, count_arg);
 }
 else
 {
-execute_cmd(path, args);
+execute_cmd(command, args);
 }
 }
 
@@ -90,10 +86,9 @@ return (command);
 
 /**
  * handleCommands - Handles user commands in a loop.
- * @path: Array of paths to search for executables.
  */
 
-void handleCommands(char *path[])
+void handleCommands(void)
 {
 pid_t pid;
 while (1)
@@ -120,7 +115,7 @@ break;
 }
 if (pid == 0)
 {
-executeCommand(command, path);
+executeCommand(command);
 free(command);
 _exit(EXIT_SUCCESS);
 }

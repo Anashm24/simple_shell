@@ -9,7 +9,7 @@
 
 int main(void)
 {
-char *path[MAX_ARGS];
+/*char *path[MAX_ARGS];*/
 int i;
 char *token;
 char *path_env = _getenv("PATH");
@@ -20,15 +20,15 @@ perror("Error: PATH variable not found in the environment.");
 return (EXIT_FAILURE);
 }
 i = 0;
-token = _strtok(path_env, ":");
+token = _strtok(path_env, "/");
 
 while (token != NULL && i < MAX_ARGS - 1)
 {
-path[i++] = token;
-token = _strtok(NULL, ":");
+/*path[i++] = token;*/
+token = _strtok(NULL, "/");
 }
-path[i] = NULL;
+/*path[i] = NULL;*/
 
-handleCommands(path);
+handleCommands();
 return (EXIT_SUCCESS);
 }

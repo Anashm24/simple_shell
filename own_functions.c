@@ -95,29 +95,23 @@ return (token);
 /**
  * execute_cmd - Execute a command by searching for its executable file
  *                in the specified paths.
- * @path: An array of strings representing the directories to search for
+ * @command: An array of strings representing the directories to search for
  *        the executable file.
  * @args: An array of strings representing the command and its arguments.
  */
 
-void execute_cmd(char *path[], char *args[])
+void execute_cmd(char *command, char *args[])
 {
-int i;
-char command_path[1024];
 char **env = environ;
 
-for (i = 0; path[i] != NULL; i++)
-{
-_strcpy(command_path, path[i]);
-_strcat(command_path, "/");
-_strcat(command_path, args[0]);
-if (access(command_path, X_OK) != -1 && execve(command_path, args, env) == -1)
+if (access(command, X_OK) != -1 && execve(command, args, env) == -1)
 {
 _exit(EXIT_FAILURE);
 }
-}
 _exit(EXIT_FAILURE);
 }
+
+
 
 /**
  * _getline - Reads a line of text from a file descriptor.
