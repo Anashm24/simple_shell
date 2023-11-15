@@ -1,14 +1,16 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
+
 
 /**
-* main - Entry point of the program.
+* Testbetty - Entry point of the program.
 * Return: Always 0 (Success).
 */
 
-int main(void)
+int Testbetty(void)
 {
-printf("Hello world!")
+write(STDOUT_FILENO, "Hello world!", 12);
 return (0);
 }
