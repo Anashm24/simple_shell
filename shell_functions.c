@@ -107,7 +107,12 @@ perror("Fork failed");
 free(command);
 _exit(EXIT_FAILURE);
 }
-if (isatty(STDIN_FILENO) && _strcmp(command, "exit") == 0)
+if (isatty(STDIN_FILENO))
+{
+free(command);
+break;
+}
+if (_strcmp(command, "exit") == 0)
 {
 exit_status(command);
 free(command);
