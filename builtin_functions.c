@@ -141,5 +141,6 @@ x++;
 token = _strtok(NULL, " ");
 }
 execve(args[0], args, NULL);
-
+free(args);
+_exit(EXIT_FAILURE);
 }

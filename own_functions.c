@@ -103,10 +103,11 @@ return (token);
 void execute_cmd(char *path[], char *args[])
 {
 int i;
+char command_path[1024];
 char **env = environ;
+
 for (i = 0; path[i] != NULL; i++)
 {
-char command_path[1024];
 _strcpy(command_path, path[i]);
 _strcat(command_path, "/");
 _strcat(command_path, args[0]);
@@ -115,6 +116,7 @@ if (access(command_path, X_OK) != -1 && execve(command_path, args, env) == -1)
 _exit(EXIT_FAILURE);
 }
 }
+_exit(EXIT_FAILURE);
 }
 
 /**
@@ -151,7 +153,7 @@ while ((ret = read(fd, &character, 1)) > 0)
 (*line)[i] = character;
 i++;
 
-if (i > *n_ch)
+if (i > *n_ch - 1)
 {
 *n_ch *= 2;
 *line = realloc(*line, *n_ch);

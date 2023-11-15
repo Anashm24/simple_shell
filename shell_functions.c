@@ -17,6 +17,12 @@ void executeCommand(char *command, char *path[])
 char *args[MAX_ARGS];
 int count_arg = 0;
 char *token = _strtok(command, " ");
+
+if (command == NULL)
+{
+perror("Invalid command");
+_exit(EXIT_FAILURE);
+}
 while (token != NULL && count_arg < MAX_ARGS - 1)
 {
 args[count_arg] = token;
@@ -51,7 +57,6 @@ else
 {
 execute_cmd(path, args);
 }
-_exit(EXIT_FAILURE);
 }
 
 /**
@@ -114,16 +119,20 @@ _exit(EXIT_FAILURE);
 if (isatty(STDIN_FILENO) && _strcmp(command, "exit") == 0)
 {
 exit_status(command);
+free(command);
+break;
 }
 if (pid == 0)
 {
 executeCommand(command, path);
+free(command);
+_exit(EXIT_SUCCESS);
 }
 else
 {
 int status;
 wait(&status);
-}
 free(command);
+}
 }
 }
