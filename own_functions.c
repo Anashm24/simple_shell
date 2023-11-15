@@ -110,7 +110,6 @@ if (execve(command, args, env) == -1)
 free(command);
 perror("./hsh");
 }
-
 _exit(EXIT_FAILURE);
 }
 
@@ -127,6 +126,7 @@ _exit(EXIT_FAILURE);
  *         reached before any characters are read, returns 0.
  */
 
+/**
 ssize_t _getline(char **line, size_t *n_ch, int fd)
 {
 char character;
@@ -169,3 +169,4 @@ return (-1);
 (*line)[i] = '\0';
 return (i);
 }
+*/

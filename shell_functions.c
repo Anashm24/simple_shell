@@ -36,7 +36,6 @@ _exit(EXIT_FAILURE);
 }
 args[count_arg] = NULL;
 
-
 if (_strcmp(args[0], "setenv") == 0)
 {
 handle_setenv(args, count_arg);
@@ -66,7 +65,7 @@ if (isatty(STDIN_FILENO))
 {
 write(STDOUT_FILENO, "$ ", 2);
 }
-n = _getline(&command, &len, STDIN_FILENO);
+n = getline(&command, &len, stdin);
 
 if (n == -1 || (n == 0 && command[0] == '\n'))
 {
@@ -81,6 +80,7 @@ if (command[length - 1] == '\n')
 {
 command[length - 1] = '\0';
 }
+
 return (command);
 }
 
