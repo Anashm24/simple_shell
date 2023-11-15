@@ -61,7 +61,9 @@ return (NULL);
 
 char *_strtok(char *str, const char *delimiter)
 {
+char *token;
 static char *start_token;
+char *end_of_token;
 
 if (str != NULL)
 {
@@ -73,12 +75,12 @@ if (start_token == NULL)
 return (NULL);
 }
 
-char *end_of_token = _strpbrk(start_token, delimiter);
+end_of_token = _strpbrk(start_token, delimiter);
 
 if (end_of_token != NULL)
 {
 *end_of_token = '\0';
-char *token = start_token;
+token = start_token;
 start_token = end_of_token + 1;
 return (token);
 }
@@ -100,8 +102,9 @@ return (token);
 
 void execute_cmd(char *path[], char *args[])
 {
+int i;
 char **env = environ;
-for (int i = 0; path[i] != NULL; i++)
+for (i = 0; path[i] != NULL; i++)
 {
 char command_path[1024];
 _strcpy(command_path, path[i]);
@@ -123,7 +126,7 @@ _exit(EXIT_FAILURE);
  *         read. If an error occurs, returns -1. If the end of the file is
  *         reached before any characters are read, returns 0.
  */
-ssize_t _getline(char **line, size_t *n_ch, int fd)
+/*ssize_t _getline(char **line, size_t *n_ch, int fd)
 {
 char character;
 int i = 0;
@@ -162,3 +165,4 @@ break;
 (*line)[i] = '\0';
 return (i);
 }
+*/

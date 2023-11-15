@@ -33,7 +33,7 @@ args[count_arg] = NULL;
 
 if (_strcmp(args[0], "env") == 0)
 {
-handle_env(args);
+handle_env();
 }
 else if (_strcmp(args[0], "setenv") == 0)
 {
@@ -59,12 +59,13 @@ char *readInput()
 {
 char *command = NULL;
 size_t len = 0;
+int length;
 int n;
 if (isatty(STDIN_FILENO))
 {
 write(STDOUT_FILENO, "$ ", 2);
 }
-n = _getline(&command, &len, 0);
+n = getline(&command, &len, stdin);
 
 if (n == -1 || (n == 0 && command[0] == '\n'))
 {
@@ -73,11 +74,7 @@ free(command);
 _exit(EXIT_FAILURE);
 }
 
-int length = 0;
-while (command[length] != '\0')
-{
-length++;
-}
+length = n;
 
 if (command[length - 1] == '\n')
 {
@@ -93,6 +90,7 @@ return (command);
 
 void handleCommands(char *path[])
 {
+pid_t pid;
 while (1)
 {
 char *command = readInput();
@@ -101,7 +99,7 @@ if (!isatty(STDIN_FILENO) && command[0] == '\0')
 free(command);
 break;
 }
-pid_t pid = fork();
+pid = fork();
 
 if (pid == -1)
 {

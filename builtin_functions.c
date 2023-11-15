@@ -2,10 +2,9 @@
 
 /**
 *handle_env - Display the current environment variables.
-*@args: An array of strings representing the command and its arguments.
 */
 
-void handle_env(char *args[])
+void handle_env(void)
 {
 char **env = environ;
 
@@ -28,6 +27,7 @@ _exit(EXIT_SUCCESS);
 
 void handle_setenv(char *args[], int count_arg)
 {
+int i;
 char error_message[] = "Usage: setenv VARIABLE VALUE\n";
 
 if (count_arg != 3)
@@ -41,7 +41,7 @@ if (setenv(args[1], args[2], 1) == -1)
 perror("setenv failed");
 }
 
-for (int i = 0; environ[i] != NULL; i++)
+for (i = 0; environ[i] != NULL; i++)
 {
 printf("%s\n", environ[i]);
 }
@@ -56,6 +56,7 @@ _exit(EXIT_SUCCESS);
  */
 void handle_unsetenv(char *args[], int count_arg)
 {
+int i;
 char error_message[] = "Usage: unsetenv VARIABLE\n";
 
 if (count_arg != 2)
@@ -68,7 +69,7 @@ if (unsetenv(args[1]) == -1)
 {
 perror("unsetenv failed");
 }
-for (int i = 0; environ[i] != NULL; i++)
+for (i = 0; environ[i] != NULL; i++)
 {
 printf("%s\n", environ[i]);
 }
@@ -84,7 +85,9 @@ _exit(EXIT_SUCCESS);
 void exit_status(char *command)
 {
 char *token;
-int i = 0, x = 0;
+int x = 0;
+int status;
+char *second_word;
 char **args = malloc(sizeof(char *) * 2);
 
 token = _strtok(command, " ");
@@ -95,14 +98,14 @@ args[x] = token;
 x++;
 token = _strtok(NULL, " ");
 }
-char *second_word = args[1];
+second_word = args[1];
 
 if (strcmp(args[0], "exit") == 0 && second_word == NULL)
 {
 free(args);
 _exit(EXIT_SUCCESS);
 }
-int status = 0;
+status = 0;
 if (second_word != NULL)
 {
 while (*second_word != '\0')

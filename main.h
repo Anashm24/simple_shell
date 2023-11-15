@@ -21,7 +21,7 @@ char *_strpbrk(char *str, const char *delimiter);
 void executeCommand(char *command, char *path[]);
 void execute_cmd(char *path[], char *args[]);
 char *readInput();
-void handle_env(char *args[]);
+void handle_env(void);
 void handle_setenv(char *args[], int count_arg);
 void handle_unsetenv(char *args[], int count_arg);
 void handleCommands(char *path[]);
