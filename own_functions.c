@@ -104,10 +104,12 @@ void execute_cmd(char *command, char *args[])
 {
 char **env = environ;
 
-if (access(command, X_OK) != -1 && execve(command, args, env) == -1)
+
+if (execve(command, args, env) == -1)
 {
-_exit(EXIT_FAILURE);
+perror(args[0]);
 }
+
 _exit(EXIT_FAILURE);
 }
 
