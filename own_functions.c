@@ -107,7 +107,7 @@ char **env = environ;
 
 if (execve(command, args, env) == -1)
 {
-perror(args[0]);
+perror("./hsh");
 }
 
 _exit(EXIT_FAILURE);
