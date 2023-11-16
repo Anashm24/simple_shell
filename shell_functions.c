@@ -1,5 +1,7 @@
 #include "main.h"
 
+
+
 /**
  *find_newline - Finds the position of
  *the first newline character in a string.
@@ -73,40 +75,27 @@ return (tokens);
  */
 void execute(char **args)
 {
-pid_t pid = fork();
+pid_t pid;
 
-if (pid == -1)
+pid = fork();
+if (pid == 0)
 {
-perror("fork");
-exit(EXIT_FAILURE);
-}
-else if (pid == 0)
-{
-
 if (execvp(args[0], args) == -1)
 {
 perror("execvp");
 exit(EXIT_FAILURE);
 }
+exit(EXIT_SUCCESS);
+}
+else if (pid < 0)
+{
+perror("simple_shell");
 }
 else
 {
-
-int status;
-if (waitpid(pid, &status, 0) == -1)
-{
-perror("waitpid");
-exit(EXIT_FAILURE);
-}
-
-if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-{
-const char error_msg[] = "./hsh: No such file or directory\n";
-write(STDOUT_FILENO, error_msg, sizeof(error_msg) - 1);
+wait(NULL);
 }
 }
-}
-
 /**
  *interactive_mode - Runs the shell in interactive
  *mode, accepting commands from the user.
