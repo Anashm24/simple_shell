@@ -21,7 +21,7 @@ while (1)
 {
 char **args;
 if (isatty(STDIN_FILENO))
-write(STDOUT_FILENO, ":) ", 2);
+write(STDOUT_FILENO, "$ ", 2);
 
 if (getline(&line, &length_line, stdin) == -1)
 {

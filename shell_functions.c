@@ -45,7 +45,11 @@ exit(EXIT_FAILURE);
 }
 
 token = strtok(line, " \t\n\r\a");
-
+if (token == NULL)
+{
+free(line), line = NULL;
+return (NULL);
+}
 while (token != NULL)
 {
 tokens[index] = token;
