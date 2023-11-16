@@ -9,7 +9,7 @@
 #include <sys/wait.h>
 #include <string.h>
 
-
+extern char **environ;
 #define MAX_INPUT_SIZE 1024
 
 size_t _strlen(char *str);

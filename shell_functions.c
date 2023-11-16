@@ -44,12 +44,8 @@ perror("malloc");
 exit(EXIT_FAILURE);
 }
 
-token = strtok(line, " \t");
-if (token == NULL)
-{
-free(line), line = NULL;
-return (NULL);
-}
+token = strtok(line, " \t\n\r\a");
+
 while (token != NULL)
 {
 tokens[index] = token;
@@ -82,6 +78,7 @@ void execute(char **args)
 pid_t pid;
 
 pid = fork();
+
 if (pid == 0)
 {
 if (execvp(args[0], args) == -1)

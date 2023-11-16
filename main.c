@@ -33,6 +33,9 @@ newline_pos = find_newline(line);
 if (newline_pos < length_line)
 {
 line[newline_pos] = '\0';
+ if (line[0] == '\0' || (strspn(line, " \t\n\r\a") == newline_pos)) {
+            continue;  
+        }
 }
 args = splite_command(line);
 
