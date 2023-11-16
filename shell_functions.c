@@ -44,7 +44,7 @@ perror("malloc");
 exit(EXIT_FAILURE);
 }
 
-token = strtok(line, " \t\n\r\a");
+token = strtok(line, " \t");
 if (token == NULL)
 {
 free(line), line = NULL;
