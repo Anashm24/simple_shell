@@ -1,134 +1,180 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include "main.h"
 
 /**
- * executeCommand - Executes a command with specified arguments.
- * @command: Input command line.
+ *find_newline - Finds the position of
+ *the first newline character in a string.
+ *@str: The input string.
+ *Return: The position of the first newline character
+ *or the length of the string if not found.
  */
 
-void executeCommand(char *command)
+size_t find_newline(char *str)
 {
-char *args[MAX_ARGS];
-int count_arg = 0;
-char *token = _strtok(command, " ");
-
-if (command == NULL)
+size_t i;
+size_t len = _strlen(str);
+for (i = 0; i < len; i++)
 {
-perror("Invalid command");
-_exit(EXIT_FAILURE);
+if (str[i] == '\n')
+{
+return (i);
 }
-while (token != NULL && count_arg < MAX_ARGS - 1)
-{
-args[count_arg] = token;
-token = _strtok(NULL, " ");
-count_arg++;
 }
-
-if (count_arg >= MAX_ARGS - 1 && token != NULL)
-{
-perror("Too many arguments");
-_exit(EXIT_FAILURE);
-}
-args[count_arg] = NULL;
-
-if (_strcmp(args[0], "setenv") == 0)
-{
-handle_setenv(args, count_arg);
-}
-else if (_strcmp(args[0], "unsetenv") == 0)
-{
-handle_unsetenv(args, count_arg);
-}
-else
-{
-execute_cmd(command, args);
-}
+return (len);
 }
 
 /**
- * readInput - Reads a command line of input from the user.
- * Return: A pointer to the string containing user input.
+ *splite_command - Splits a string into
+ *an array of tokens based on whitespace characters.
+ *@line: The input string to be split.
+ *Return: An array of tokens.
  */
 
-char *readInput()
+char **splite_command(char *line)
 {
-char *command = NULL;
-size_t len = 0;
-int length;
-int n;
-if (isatty(STDIN_FILENO))
-{
-write(STDOUT_FILENO, "$ ", 2);
-}
-n = getline(&command, &len, stdin);
+int buffer_size = MAX_INPUT_SIZE;
+int index = 0;
+char **tokens = malloc(buffer_size * sizeof(char *));
+char *token;
 
-if (n == -1 || (n == 0 && command[0] == '\n'))
+if (!tokens)
 {
-write(STDOUT_FILENO, "\n", 1);
-free(command);
-_exit(EXIT_FAILURE);
+perror("malloc");
+exit(EXIT_FAILURE);
 }
 
-length = n;
+token = strtok(line, " \t\n\r\a");
 
-if (command[length - 1] == '\n')
+while (token != NULL)
 {
-command[length - 1] = '\0';
+tokens[index] = token;
+index++;
+
+if (index >= buffer_size)
+{
+buffer_size += MAX_INPUT_SIZE;
+tokens = realloc(tokens, buffer_size * (sizeof(char *)));
+if (!tokens)
+{
+perror("realloc");
+exit(EXIT_FAILURE);
+}
 }
 
-return (command);
+token = strtok(NULL, " \t\n\r\a");
+}
+
+tokens[index] = NULL;
+return (tokens);
 }
 
 /**
- * handleCommands - Handles user commands in a loop.
+ *execute - Executes a command with its arguments
+ *@args: An array of strings representing the command and its arguments.
  */
-
-void handleCommands(void)
+void execute(char **args)
 {
-pid_t pid;
-while (1)
-{
-char *command = readInput();
-if (!isatty(STDIN_FILENO) && command[0] == '\0')
-{
-free(command);
-break;
-}
-pid = fork();
+pid_t pid = fork();
 
 if (pid == -1)
 {
-perror("Fork failed");
-free(command);
-_exit(EXIT_FAILURE);
+perror("fork");
+exit(EXIT_FAILURE);
 }
-if (isatty(STDIN_FILENO))
+else if (pid == 0)
 {
-free(command);
-break;
+
+if (execvp(args[0], args) == -1)
+{
+perror("execvp");
+exit(EXIT_FAILURE);
 }
-if (_strcmp(command, "exit") == 0)
-{
-exit_status(command);
-free(command);
-break;
-}
-if (pid == 0)
-{
-executeCommand(command);
-free(command);
-_exit(EXIT_SUCCESS);
 }
 else
 {
+
 int status;
-wait(&status);
-free(command);
+if (waitpid(pid, &status, 0) == -1)
+{
+perror("waitpid");
+exit(EXIT_FAILURE);
+}
+
+if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+{
+const char error_msg[] = "./hsh: No such file or directory\n";
+write(STDOUT_FILENO, error_msg, sizeof(error_msg) - 1);
 }
 }
+}
+
+/**
+ *interactive_mode - Runs the shell in interactive
+ *mode, accepting commands from the user.
+ */
+
+void interactive_mode(void)
+{
+char *line = NULL;
+size_t lenght_line = 0;
+size_t newline_pos;
+
+while (1)
+{
+char **args;
+write(STDOUT_FILENO, "$ ", 2);
+
+if (getline(&line, &lenght_line, stdin) == -1)
+{
+write(STDOUT_FILENO, "\n", 1);
+free(line);
+exit(EXIT_SUCCESS);
+}
+
+newline_pos = find_newline(line);
+if (newline_pos < lenght_line)
+{
+line[newline_pos] = '\0';
+}
+
+args = splite_command(line);
+execute(args);
+
+free(args);
+}
+}
+
+/**
+ *non_interactive_mode - Runs the shell in
+ *non-interactive mode, reading commands from a file.
+ *@file_path: The path to the file containing commands.
+ */
+
+void non_interactive_mode(char *file_path)
+{
+char *line = NULL;
+size_t lenght_line = 0;
+
+FILE *file = fopen(file_path, "r");
+if (file == NULL)
+{
+perror("fopen");
+exit(EXIT_FAILURE);
+}
+
+while (getline(&line, &lenght_line, file) != -1)
+{
+char **args;
+size_t newline_pos = find_newline(line);
+if (newline_pos < lenght_line)
+{
+line[newline_pos] = '\0';
+}
+
+args = splite_command(line);
+execute(args);
+
+free(args);
+}
+
+fclose(file);
 }
