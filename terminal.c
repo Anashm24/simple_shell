@@ -42,6 +42,23 @@ void _myshell(void)
 				print_env_var();
 				status = 0;
 			}
+			  else if (!_strcmp(commands[0], "cd"))
+        {
+            if (commands[1])
+            {
+                if (cd_builtin(commands[1]) != 0)
+                {
+                    status = 2;
+                }
+            }
+            else
+            {
+                if (cd_builtin(NULL) != 0)
+                {
+                    status = 2;
+                }
+            }
+        }
 			else if (!_strcmp(commands[0], "setenv"))
 			{
             if (commands[1] && commands[2])

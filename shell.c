@@ -62,6 +62,23 @@ void non_inter_md(char *token, int *status)
 			print_env_var();
 			*status = 0;
 		}
+		  else if (!_strcmp(single_command[0], "cd"))
+        {
+            if (single_command[1])
+            {
+                if (cd_builtin(single_command[1]) != 0)
+                {
+                    *status = 2; 
+                }
+            }
+            else
+            {
+                if (cd_builtin(NULL) != 0)
+                {
+                    *status = 2; 
+                }
+            }
+        }
 		else if (!_strcmp(single_command[0], "setenv"))
 		{
             if (single_command[1] && single_command[2])
