@@ -20,5 +20,8 @@ void interactive_mode(void);
 void non_interactive_mode(char *file_path);
 void print_error(void);
 void exit_status(char **args);
+void _strcpy(char *dest, const char *src);
+void _strcat(char *dest, const char *src);
+
 
 #endif
