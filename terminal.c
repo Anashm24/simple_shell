@@ -9,8 +9,6 @@
 void _myshell(void)
 {
 char *line = NULL, **commands, *envp[] = {NULL};
-<<<<<<< HEAD
-
 size_t size_line = 0;
 ssize_t nread;
 int status = 0;
@@ -30,27 +28,6 @@ if (commands[1])
 {
 int my_status = str_to_int(commands[1]);
 
-=======
-size_t size_line = 0;
-ssize_t nread;
-int status = 0;
-
-while (1)
-{
-nread = read_input(&line, &size_line);
-if (nread == -1)
-_getline_error(line);
-commands = split_cmd(line, " \n\t");
-if (commands[0])
-{
-
-if (!_strcmp(commands[0], "exit"))
-{
-if (commands[1])
-{
-int my_status = str_to_int(commands[1]);
-
->>>>>>> e9def865be8d8e67d1c448c175be121bcb7c3a53
 _exit_(my_status, commands, line, &status);
 }
 else
@@ -65,8 +42,6 @@ else if (!_strcmp(commands[0], "env"))
 print_env_var();
 status = 0;
 }
-<<<<<<< HEAD
-=======
 else if (!_strcmp(commands[0], "cd"))
 {
 if (commands[1])
@@ -84,7 +59,6 @@ status = 2;
 }
 }
 }
->>>>>>> e9def865be8d8e67d1c448c175be121bcb7c3a53
 else if (!_strcmp(commands[0], "setenv"))
 {
 if (commands[1] && commands[2])
@@ -93,31 +67,18 @@ _setenv(commands[1], commands[2]);
 }
 else
 {
-<<<<<<< HEAD
-fprintf(stderr, "setenv: Invalid syntax\n");
-=======
 perror("./hsh");
 
->>>>>>> e9def865be8d8e67d1c448c175be121bcb7c3a53
 }
 }
 else if (!_strcmp(commands[0], "unsetenv"))
 {
-<<<<<<< HEAD
-if (commands[1])
-{
-=======
 if (commands[1]) {
->>>>>>> e9def865be8d8e67d1c448c175be121bcb7c3a53
 _unsetenv(commands[1]);
 }
 else
 {
-<<<<<<< HEAD
-fprintf(stderr, "unsetenv: Missing variable\n");
-=======
 perror("./hsh");
->>>>>>> e9def865be8d8e67d1c448c175be121bcb7c3a53
 }
 }
 else
@@ -185,11 +146,6 @@ return;
 for (i = 0; array[i] != NULL; i++)
 {
 free(array[i]);
-<<<<<<< HEAD
-=======
-}
-free(array);
->>>>>>> e9def865be8d8e67d1c448c175be121bcb7c3a53
 }
 free(array);
 }
