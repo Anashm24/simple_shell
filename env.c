@@ -8,35 +8,35 @@
  */
 void _execvep(char **commands, char **envp, int *status)
 {
-	char *full_path = NULL;
-	int pid;
+char *full_path = NULL;
+int pid;
 
 
-	if (access(commands[0], X_OK) == 0)
-	{
-		pid = fork();
+if (access(commands[0], X_OK) == 0)
+{
+pid = fork();
 
-		if (pid == 0)
-			execve(commands[0], commands, envp);
-		else
-			wait_pid(status);
-	}
-	else if (_locate(commands[0], &full_path))
-	{
-		pid = fork();
+if (pid == 0)
+execve(commands[0], commands, envp);
+else
+wait_pid(status);
+}
+else if (_locate(commands[0], &full_path))
+{
+pid = fork();
 
-		if (pid == 0)
-			execve(full_path, commands, envp);
-		else
-			wait_pid(status);
+if (pid == 0)
+execve(full_path, commands, envp);
+else
+wait_pid(status);
 
-		free(full_path);
-	}
-	else
-	{
-		*status = 127;
-		write_error(commands[0]);
-	};
+free(full_path);
+}
+else
+{
+*status = 127;
+write_error(commands[0]);
+};
 }
 
 /**
@@ -48,46 +48,46 @@ void _execvep(char **commands, char **envp, int *status)
  */
 int _locate(char *command, char **full_path)
 {
-	char *token, *path_env;
-	int found = 0;
+char *token, *path_env;
+int found = 0;
 
 
 
-	path_env = _getenv("PATH");
+path_env = _getenv("PATH");
 
-	if (path_env != NULL)
-	{
-		char *path_env_copy = strdup(path_env);
+if (path_env != NULL)
+{
+char *path_env_copy = strdup(path_env);
 
-		token = strtok(path_env_copy, ":");
+token = strtok(path_env_copy, ":");
 
-		while (token != NULL && !found)
-		{
-			*full_path = malloc(strlen(token) + strlen(command) + 2);
-			if (*full_path != NULL)
-			{
-				strcpy(*full_path, token);
-				strcat(*full_path, "/");
-				strcat(*full_path, command);
+while (token != NULL && !found)
+{
+*full_path = malloc(strlen(token) + strlen(command) + 2);
+if (*full_path != NULL)
+{
+strcpy(*full_path, token);
+strcat(*full_path, "/");
+strcat(*full_path, command);
 
 
-				if (access(*full_path, X_OK) == 0)
-				{
+if (access(*full_path, X_OK) == 0)
+{
 
-					found = 1;
-				}
+found = 1;
+}
 
-				if (!found)
-					free(*full_path);
-			}
+if (!found)
+free(*full_path);
+}
 
-			token = strtok(NULL, ":");
-		}
+token = strtok(NULL, ":");
+}
 
-		free(path_env_copy);
-	}
+free(path_env_copy);
+}
 
-	return (found);
+return (found);
 }
 
 /**
@@ -98,18 +98,18 @@ int _locate(char *command, char **full_path)
  */
 void wait_pid(int *status)
 {
-	int child_status;
+int child_status;
 
-	if (wait(&child_status) == -1)
-	{
-		perror("wait");
-		exit(EXIT_FAILURE);
-	}
+if (wait(&child_status) == -1)
+{
+perror("wait");
+exit(EXIT_FAILURE);
+}
 
-	if (WIFEXITED(child_status))
-	{
-		*status = WEXITSTATUS(child_status);
-	}
+if (WIFEXITED(child_status))
+{
+*status = WEXITSTATUS(child_status);
+}
 }
 /**
  * _getenv - Searches for an environment variable and returns its value
@@ -119,21 +119,21 @@ void wait_pid(int *status)
  */
 char *_getenv(const char *path)
 {
-	int i;
-	int path_length = _strlen((char *) path);
+int i;
+int path_length = _strlen((char *) path);
 
-	for (i = 0; environ[i] != NULL; i++)
-	{
-		if (!strncmp(path, environ[i], path_length))
-		{
-			if (environ[i][path_length] == '=')
-			{
-				return (environ[i] + path_length + 1);
-			}
-		}
-	}
+for (i = 0; environ[i] != NULL; i++)
+{
+if (!strncmp(path, environ[i], path_length))
+{
+if (environ[i][path_length] == '=')
+{
+return (environ[i] + path_length + 1);
+}
+}
+}
 
-	return (NULL);
+return (NULL);
 }
 /**
  * print_env_var - Prints the environment variables to stdout
@@ -142,12 +142,12 @@ char *_getenv(const char *path)
  */
 void print_env_var(void)
 {
-	char **env = environ;
+char **env = environ;
 
-	while (*env != NULL)
-	{
-		write(STDOUT_FILENO, *env, strlen(*env));
-		write(STDOUT_FILENO, "\n", 1);
-		env++;
-	}
+while (*env != NULL)
+{
+write(STDOUT_FILENO, *env, strlen(*env));
+write(STDOUT_FILENO, "\n", 1);
+env++;
+}
 }
