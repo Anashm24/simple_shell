@@ -13,19 +13,19 @@ void exit_status(int my_status, char **single_command, char **token,
 
 						int *status)
 {
-	if (my_status == -1 ||
-		(my_status == 0 && single_command[1][0] != '0') ||
-		my_status < 0)
-	{
-		_exit_error(single_command[1]);
-		*status = 2;
-	}
-	else
-	{
-		free(*token);
-		free_array(single_command);
-		exit(my_status);
-	}
+if (my_status == -1 ||
+(my_status == 0 && single_command[1][0] != '0') ||
+my_status < 0)
+{
+_exit_error(single_command[1]);
+*status = 2;
+}
+else
+{
+free(*token);
+free_array(single_command);
+exit(my_status);
+}
 }
 
 /**
@@ -41,19 +41,19 @@ void _exit_(int my_status, char **commands,
 
 char *line, int *status)
 {
-	if (my_status == -1 ||
-		(my_status == 0 && commands[1][0] != '0') ||
-		my_status < 0)
-	{
-		_exit_error(commands[1]);
-		*status = 2;
-	}
-	else
-	{
-		free(line);
-		free_array(commands);
-		exit(my_status);
-	}
+if (my_status == -1 ||
+(my_status == 0 && commands[1][0] != '0') ||
+my_status < 0)
+{
+_exit_error(commands[1]);
+*status = 2;
+}
+else
+{
+free(line);
+free_array(commands);
+exit(my_status);
+}
 }
 
 /**
@@ -85,17 +85,16 @@ ssize_t _getline(char **line, size_t *size)
 size_t pos = 0;
 int c;
 
-
-	if (*line == NULL || *size == 0)
-	{
-		*size = 128;
-		*line = malloc(*size);
-		if (*line == NULL)
-		{
-			perror("malloc");
-			return (-1);
-		}
-	}
+if (*line == NULL || *size == 0)
+{
+*size = 128;
+*line = malloc(*size);
+if (*line == NULL)
+{
+perror("malloc");
+return (-1);
+}
+}
 
 while ((c = getchar()) != EOF && c != '\n')
 {

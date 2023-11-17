@@ -10,16 +10,16 @@
 */
 int environ_size(void) 
 {
-	int size = 0;
+int size = 0;
 
-	char **env = environ;
+char **env = environ;
 
-	while (*env != NULL) {
-		size++;
-		env++;
-	}
+while (*env != NULL) {
+size++;
+env++;
+}
 
-	return (size);
+return (size);
 }
 /**
 * _setenv - Set or update an environment variable.
@@ -30,106 +30,106 @@ int environ_size(void)
 */
 int _setenv(const char *variable, const char *value)
 {
-	char *existing_value;
+char *existing_value;
 
-	if (!variable || !value) {
-		perror("setenv");
-		return (-1);
-	}
+if (!variable || !value) {
+perror("setenv");
+return (-1);
+}
 
-	existing_value = _getenv(variable);
+existing_value = _getenv(variable);
 
-	if (existing_value != NULL) {
-		char **new_environment;
+if (existing_value != NULL) {
+char **new_environment;
 
-		int variable_length = _strlen(variable);
+int variable_length = _strlen(variable);
 
-		int existing_value_length = _strlen(existing_value);
+int existing_value_length = _strlen(existing_value);
 
-		int i;
+int i;
 
-		char *new_entry = malloc(variable_length + 1 + existing_value_length + 1);
+char *new_entry = malloc(variable_length + 1 + existing_value_length + 1);
 
-		if (!new_entry)
-		{
-			perror("setenv");
-			return (-1);
-		}
+if (!new_entry)
+{
+perror("setenv");
+return (-1);
+}
 
-		strcpy(new_entry, variable);
-		strcat(new_entry, "=");
-		strcat(new_entry, value);
+strcpy(new_entry, variable);
+strcat(new_entry, "=");
+strcat(new_entry, value);
 
-		for (i = 0; environ[i] != NULL; i++) 
-        {
-			if (!strncmp(variable, environ[i], variable_length)) 
-            {
-				free(environ[i]);
-				environ[i] = new_entry;
-				free(existing_value);
-				return (0);
-			}
-		}
+for (i = 0; environ[i] != NULL; i++) 
+{
+if (!strncmp(variable, environ[i], variable_length)) 
+{
+free(environ[i]);
+environ[i] = new_entry;
+free(existing_value);
+return (0);
+}
+}
 
-		new_environment = malloc((environ_size() + 2) * sizeof(char *));
-		if (!new_environment) {
-			perror("setenv");
-			return (-1);
-		}
+new_environment = malloc((environ_size() + 2) * sizeof(char *));
+if (!new_environment) {
+perror("setenv");
+return (-1);
+}
 
-		for (i = 0; environ[i] != NULL; i++)
-		{
-			new_environment[i] = environ[i];
-		}
+for (i = 0; environ[i] != NULL; i++)
+{
+new_environment[i] = environ[i];
+}
 
-		new_environment[environ_size()] = new_entry;
-		new_environment[environ_size() + 1] = NULL;
+new_environment[environ_size()] = new_entry;
+new_environment[environ_size() + 1] = NULL;
 
-		environ = new_environment;
+environ = new_environment;
 
-		return (0);
-	}
-	else
-	{
-		int variable_length = _strlen(variable);
+return (0);
+}
+else
+{
+int variable_length = _strlen(variable);
 
-		int value_length = _strlen(value);
+int value_length = _strlen(value);
 
-		char **new_environment;
+char **new_environment;
 
-		int i;
+int i;
 
-		char *new_entry = malloc(variable_length + 1 + value_length + 1);
+char *new_entry = malloc(variable_length + 1 + value_length + 1);
 
-		if (!new_entry) 
-        {
-			perror("setenv");
-			return (-1);
-		}
+if (!new_entry) 
+{
+perror("setenv");
+return (-1);
+}
 
-		strcpy(new_entry, variable);
-		strcat(new_entry, "=");
-		strcat(new_entry, value);
+strcpy(new_entry, variable);
+strcat(new_entry, "=");
+strcat(new_entry, value);
 
-		new_environment = malloc((environ_size() + 2) * sizeof(char *));
-		if (!new_environment) 
-        {
-			perror("setenv");
-			return (-1);
-        }
+new_environment = malloc((environ_size() + 2) * sizeof(char *));
+if (!new_environment) 
+{
+perror("setenv");
+return (-1);
+}
 
-		for (i = 0; environ[i] != NULL; i++)
-		{
-			new_environment[i] = environ[i];
-		}
+for (i = 0; environ[i] != NULL; i++)
+{
+new_environment[i] = environ[i];
+}
 
-		new_environment[environ_size()] = new_entry;
-		new_environment[environ_size() + 1] = NULL;
-		environ = new_environment;
-		free(new_environment);
-		free(new_entry);
-		return (0);
-	}
+new_environment[environ_size()] = new_entry;
+new_environment[environ_size() + 1] = NULL;
+environ = new_environment;
+free(new_environment);
+free(new_entry);
+return (0);
+}
 }
 
 /**
@@ -141,33 +141,33 @@ int _setenv(const char *variable, const char *value)
 int _unsetenv(const char *variable) 
 {
 
-	int variable_length;
+int variable_length;
 
-	int i, j;
+int i, j;
 
-	if (!variable) 
-    {
-		perror("unsetenv");
-		return (-1);
-	}
+if (!variable) 
+{
+perror("unsetenv");
+return (-1);
+}
 
-	variable_length = _strlen(variable);
+variable_length = _strlen(variable);
 
-	for (i = 0; environ[i] != NULL; i++) 
-    {
-		if (!strncmp(variable, environ[i], variable_length))
-        {
-			for (j = i; environ[j] != NULL; j++)
-			{
-				environ[j] = environ[j + 1];
-			}
+for (i = 0; environ[i] != NULL; i++) 
+{
+if (!strncmp(variable, environ[i], variable_length))
+{
+for (j = i; environ[j] != NULL; j++)
+{
+environ[j] = environ[j + 1];
+}
 
-			return (0);
-		}
-	}
+return (0);
+}
+}
 
-	fprintf(stderr, "unsetenv: %s: not found\n", variable);
-	return (-1);
+fprintf(stderr, "unsetenv: %s: not found\n", variable);
+return (-1);
 }
 
 
@@ -181,21 +181,21 @@ int _unsetenv(const char *variable)
  */
 int cd_builtin(char *path)
 {
-    if (path == NULL)
-    {
-        path = _getenv("HOME");
-        if (path == NULL)
-        {
-            write(STDERR_FILENO, "cd: No home directory\n", 22);
-            return -1;
-        }
-    }
+if (path == NULL)
+{
+path = _getenv("HOME");
+if (path == NULL)
+{
+write(STDERR_FILENO, "cd: No home directory\n", 22);
+return -1;
+}
+}
 
-    if (chdir(path) != 0)
-    {
-        perror("cd");
-        return -1;
-    }
+if (chdir(path) != 0)
+{
+perror("cd");
+return -1;
+}
 
-    return 0;
+return 0;
 }
