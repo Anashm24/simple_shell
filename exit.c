@@ -86,14 +86,16 @@ size_t pos = 0;
 int c;
 
 
-    if (*line == NULL || *size == 0) {
-        *size = 128;
-        *line = malloc(*size);
-        if (*line == NULL) {
-            perror("malloc");
-            return (-1);
-        }
-    }
+	if (*line == NULL || *size == 0)
+	{
+		*size = 128;
+		*line = malloc(*size);
+		if (*line == NULL)
+		{
+			perror("malloc");
+			return (-1);
+		}
+	}
 
 while ((c = getchar()) != EOF && c != '\n')
 {
