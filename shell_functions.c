@@ -69,10 +69,19 @@ tokens[index] = NULL;
 return (tokens);
 }
 
-/**
- *execute - Executes a command with its arguments
- *@args: An array of strings representing the command and its arguments.
- */
+void free_array(char **array)
+{
+	int i;
+
+	if (!array)
+		return;
+	for (i = 0; array[i] != NULL; i++)
+	{
+		free(array[i]);
+	}
+}
+
+
 void execute(char **args)
 {
 pid_t pid;
@@ -84,7 +93,8 @@ if (pid == 0)
 if (execvp(args[0], args) == -1)
 {
 perror("./hsh");
-exit(EXIT_FAILURE);
+free_array(args);
+free(args);
 }
 exit(EXIT_SUCCESS);
 }
@@ -94,9 +104,12 @@ perror("simple_shell");
 }
 else
 {
-wait(NULL);
+int status;
+waitpid(pid, &status, 0);
+
 }
 }
+
 /**
  *interactive_mode - Runs the shell in interactive
  *mode, accepting commands from the user.
