@@ -44,6 +44,5 @@ execute(args);
 
 free(args);
 }
-free(line);
 return (0);
 }
