@@ -171,7 +171,6 @@ return (-1);
 }
 
 
-#include "main.h"
 
 /**
  * cd_builtin - Change current working directory.

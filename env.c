@@ -36,7 +36,7 @@ else
 {
 *status = 127;
 write_error(commands[0]);
-};
+}
 }
 
 /**
@@ -50,8 +50,6 @@ int _locate(char *command, char **full_path)
 {
 char *token, *path_env;
 int found = 0;
-
-
 
 path_env = _getenv("PATH");
 

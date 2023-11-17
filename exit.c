@@ -10,8 +10,7 @@
 * Return: void.
 */
 void exit_status(int my_status, char **single_command, char **token,
-
-						int *status)
+int *status)
 {
 if (my_status == -1 ||
 (my_status == 0 && single_command[1][0] != '0') ||
