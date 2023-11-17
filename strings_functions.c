@@ -24,6 +24,38 @@ return (*str1 - *str2);
  * @src: Source string to be copied.
  */
 
+void _strcpy(char *dest, const char *src)
+{
+while (*src != '\0')
+{
+*dest = *src;
+
+dest++;
+src++;
+}
+*dest = '\0';
+}
+
+/**
+ * _strcat - Custom implementation of string concatenation.
+ * @dest: Destination buffer to concatenate the string into.
+ * @src: Source string to be concatenated.
+ */
+
+void _strcat(char *dest, const char *src)
+{
+while (*dest != '\0')
+{
+dest++;
+}
+while (*src != '\0')
+{
+*dest = *src;
+dest++;
+src++;
+}
+*dest = '\0';
+}
 
 /**
  * _strlen - Custom implementation of string length calculation.
