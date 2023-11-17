@@ -1,15 +1,16 @@
 #include "main.h"
 
 /**
- * exit_status - Handles the exit status for a command.
- * @my_status: The status to check.
- * @single_command: The command arguments.
- * @token: A pointer to dynamically allocated memory.
- * @status: A pointer to an int to hold the status value.
- *
- * Return: void.
- */
+* exit_status - Handles the exit status for a command.
+* @my_status: The status to check.
+* @single_command: The command arguments.
+* @token: A pointer to dynamically allocated memory.
+* @status: A pointer to an int to hold the status value.
+*
+* Return: void.
+*/
 void exit_status(int my_status, char **single_command, char **token,
+
 						int *status)
 {
 	if (my_status == -1 ||
@@ -28,15 +29,16 @@ void exit_status(int my_status, char **single_command, char **token,
 }
 
 /**
- * custom_exit - Handles custom exit statuses for a command.
- * @my_status: The exit status to check.
- * @commands: The array containing the command and its arguments.
- * @line: A pointer to the input line.
- * @status: A pointer to an int to hold the return status value.
- *
- * Return: void.
- */
+* custom_exit - Handles custom exit statuses for a command.
+* @my_status: The exit status to check.
+* @commands: The array containing the command and its arguments.
+* @line: A pointer to the input line.
+* @status: A pointer to an int to hold the return status value.
+*
+* Return: void.
+*/
 void _exit_(int my_status, char **commands,
+
 char *line, int *status)
 {
 	if (my_status == -1 ||
@@ -55,50 +57,66 @@ char *line, int *status)
 }
 
 /**
- * _getline_error - Handles getline() error.
- * @line: A pointer to the input line.
- *
- * Return: void.
- */
+* _getline_error - Handles getline() error.
+* @line: A pointer to the input line.
+*
+* Return: void.
+*/
 void _getline_error(char *line)
 {
-	perror("getline");
-	free(line);
-	line = NULL;
-	exit(EXIT_FAILURE);
+perror("getline");
+free(line);
+line = NULL;
+exit(EXIT_FAILURE);
 }
+
+
+/**
+* _getline - Reads a line of input from the user.
+* @line: A pointer to a string to hold the input line.
+* @size: A pointer to a size_t to hold the size of the input line.
+*
+* Return: The number of characters read, including the null terminator,
+*or -1 if EOF is encountered and no characters have been read.
+*/
 
 ssize_t _getline(char **line, size_t *size)
 {
-    size_t pos = 0;
-    int c;
+size_t pos = 0;
+int c;
 
-    if (*line == NULL || *size == 0) {
-        *size = 128;
-        *line = malloc(*size);
-        if (*line == NULL) {
-            perror("malloc");
-            return (-1);
-        }
-    }
+if (*line == NULL || *size == 0)
+{
+*size = 128;
+*line = malloc(*size);
+if (*line == NULL)
+{
+perror("malloc");
+return (-1);
+}
+}
 
-    while ((c = getchar()) != EOF && c != '\n') {
-        if (pos == *size - 1) {
-            *size *= 2;
-            *line = realloc(*line, *size);
-            if (*line == NULL) {
-                perror("realloc");
-                return -1;
-            }
-        }
-        (*line)[pos++] = c;
-    }
+while ((c = getchar()) != EOF && c != '\n')
+{
+if (pos == *size - 1)
+{
+*size *= 2;
+*line = realloc(*line, *size);
+if (*line == NULL)
+{
+perror("realloc");
+return (-1);
+}
+}
+(*line)[pos++] = c;
+}
 
-    if (c == EOF && pos == 0) {
-        return (-1);
-    }
+if (c == EOF && pos == 0)
+{
+return (-1);
+}
 
-    (*line)[pos] = '\0';
+(*line)[pos] = '\0';
 
-    return (pos + 1);
+return (pos + 1);
 }
