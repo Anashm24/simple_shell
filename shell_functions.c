@@ -1,6 +1,36 @@
 #include "main.h"
 
+void exit_status(char **args)
+{
+    int status = 0;
+    char *second_word;
+    second_word = args[1];
 
+    if (strcmp(args[0], "exit") == 0)
+    {
+        if(second_word == NULL)
+        {
+        free(args);
+        _exit(EXIT_SUCCESS);
+        }
+    else 
+    {
+        while (*second_word != '\0')
+        {
+            if (*second_word < '0' || *second_word > '9')
+            {
+                perror("exit: numeric argument required\n");
+                free(args);
+                return;
+            }
+            status = status * 10 + *second_word - '0';
+            second_word++;
+        }
+        free(args);
+        _exit(status);
+    }
+}
+}
 
 /**
  *find_newline - Finds the position of
@@ -75,21 +105,16 @@ return (tokens);
  */
 void execute(char **args)
 {
-    pid_t pid;
-    if (strcmp(args[0], "exit") == 0)
-    {
-        if (args[1] != NULL)
-        {
-            int exit_status = atoi(args[1]);
-            
-            exit(exit_status);
-        }
-        else
-        {
-            free(args);
-            exit(0);
-        }
-    }
+pid_t pid;
+if (args == NULL || args[0] == NULL)
+{
+return;
+}
+
+if (strcmp(args[0], "exit") == 0)
+{
+exit_status(args);
+}
 
 pid = fork();
 

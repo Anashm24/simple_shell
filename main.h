@@ -19,5 +19,6 @@ void execute(char **args);
 void interactive_mode(void);
 void non_interactive_mode(char *file_path);
 void print_error(void);
+void exit_status(char **args);
 
 #endif
