@@ -75,7 +75,21 @@ return (tokens);
  */
 void execute(char **args)
 {
-pid_t pid;
+    pid_t pid;
+    if (strcmp(args[0], "exit") == 0)
+    {
+        if (args[1] != NULL)
+        {
+            int exit_status = atoi(args[1]);
+            
+            exit(exit_status);
+        }
+        else
+        {
+            free(args);
+            exit(0);
+        }
+    }
 
 pid = fork();
 
@@ -150,7 +164,6 @@ if (file == NULL)
 perror("fopen");
 exit(EXIT_FAILURE);
 }
-
 while (getline(&line, &lenght_line, file) != -1)
 {
 char **args;
