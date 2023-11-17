@@ -41,4 +41,6 @@ int _strcmp(char *s1, char *s2);
 void free_array(char **array);
 int environ_size(void);
 int cd_builtin(char *path);
+void setenv_condition(char **single_command);
+
 #endif

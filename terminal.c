@@ -8,85 +8,86 @@
  */
 void _myshell(void)
 {
-	char *line = NULL, **commands, *envp[] = {NULL};
-	size_t size_line = 0;
-	ssize_t nread;
-	int status = 0;
+char *line = NULL, **commands, *envp[] = {NULL};
+size_t size_line = 0;
+ssize_t nread;
+int status = 0;
 
-	while (1)
-	{
-		nread = read_input(&line, &size_line);
-		if (nread == -1)
-			_getline_error(line);
-		commands = split_cmd(line, " \n\t");
-		if (commands[0])
-		{
+while (1)
+{
+nread = read_input(&line, &size_line);
+if (nread == -1)
+_getline_error(line);
+commands = split_cmd(line, " \n\t");
+if (commands[0])
+{
 
-			if (!_strcmp(commands[0], "exit"))
-			{
-				if (commands[1])
-				{
-					int my_status = str_to_int(commands[1]);
+if (!_strcmp(commands[0], "exit"))
+{
+if (commands[1])
+{
+int my_status = str_to_int(commands[1]);
 
-					_exit_(my_status, commands, line, &status);
-				}
-				else
-				{
-					free(line);
-					free_array(commands);
-					exit(status);
-				}
-			}
-			else if (!_strcmp(commands[0], "env"))
-			{
-				print_env_var();
-				status = 0;
-			}
-			  else if (!_strcmp(commands[0], "cd"))
-        {
-            if (commands[1])
-            {
-                if (cd_builtin(commands[1]) != 0)
-                {
-                    status = 2;
-                }
-            }
-            else
-            {
-                if (cd_builtin(NULL) != 0)
-                {
-                    status = 2;
-                }
-            }
-        }
-			else if (!_strcmp(commands[0], "setenv"))
-			{
-            if (commands[1] && commands[2])
-			{
-                _setenv(commands[1], commands[2]);
-            }
-			else
-			{
-                fprintf(stderr, "setenv: Invalid syntax\n");
-            }
-        }
-		else if (!_strcmp(commands[0], "unsetenv"))
-		{
-            if (commands[1]) {
-                _unsetenv(commands[1]);
-            }
-			else
-			{
-                fprintf(stderr, "unsetenv: Missing variable\n");
-            }
-        }
-			else
-				_execvep(commands, envp, &status);
-		}
-		free_array(commands);
-		free(line);
-		line = NULL;
-	}
+_exit_(my_status, commands, line, &status);
+}
+else
+{
+free(line);
+free_array(commands);
+exit(status);
+}
+}
+else if (!_strcmp(commands[0], "env"))
+{
+print_env_var();
+status = 0;
+}
+else if (!_strcmp(commands[0], "cd"))
+{
+if (commands[1])
+{
+if (cd_builtin(commands[1]) != 0)
+{
+status = 2;
+}
+}
+else
+{
+if (cd_builtin(NULL) != 0)
+{
+status = 2;
+}
+}
+}
+else if (!_strcmp(commands[0], "setenv"))
+{
+if (commands[1] && commands[2])
+{
+_setenv(commands[1], commands[2]);
+}
+else
+{
+perror("./hsh");
+
+}
+}
+else if (!_strcmp(commands[0], "unsetenv"))
+{
+if (commands[1]) {
+_unsetenv(commands[1]);
+}
+else
+{
+perror("./hsh");
+}
+}
+else
+_execvep(commands, envp, &status);
+}
+free_array(commands);
+free(line);
+line = NULL;
+}
 }
 
 
@@ -99,8 +100,8 @@ void _myshell(void)
  */
 ssize_t read_input(char **line, size_t *size_line)
 {
-	write(STDOUT_FILENO, "$ ", 2);
-	return (getline(line, size_line, stdin));
+write(STDOUT_FILENO, "$ ", 2);
+return (getline(line, size_line, stdin));
 }
 
 /**
@@ -111,9 +112,9 @@ ssize_t read_input(char **line, size_t *size_line)
  */
 void _exit_error(char *number)
 {
-	write(STDERR_FILENO, "./hsh: 1: exit: Illegal number: ", 32);
-	write(STDERR_FILENO, number, _strlen(number));
-	write(STDERR_FILENO, "\n", 1);
+write(STDERR_FILENO, "./hsh: 1: exit: Illegal number: ", 32);
+write(STDERR_FILENO, number, _strlen(number));
+write(STDERR_FILENO, "\n", 1);
 }
 
 
@@ -125,9 +126,9 @@ void _exit_error(char *number)
  */
 void write_error(char *command)
 {
-	write(STDERR_FILENO, "./hsh: 1: ", 10);
-	write(STDERR_FILENO, command, _strlen(command));
-	write(STDERR_FILENO, ": not found\n", 12);
+write(STDERR_FILENO, "./hsh: 1: ", 10);
+write(STDERR_FILENO, command, _strlen(command));
+write(STDERR_FILENO, ": not found\n", 12);
 }
 
 /**
@@ -138,13 +139,13 @@ void write_error(char *command)
  */
 void free_array(char **array)
 {
-	int i;
+int i;
 
-	if (!array)
-		return;
-	for (i = 0; array[i] != NULL; i++)
-	{
-		free(array[i]);
-	}
-	free(array);
+if (!array)
+return;
+for (i = 0; array[i] != NULL; i++)
+{
+free(array[i]);
+}
+free(array);
 }

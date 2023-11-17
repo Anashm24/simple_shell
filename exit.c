@@ -73,6 +73,7 @@ ssize_t _getline(char **line, size_t *size)
     size_t pos = 0;
     int c;
 
+
     if (*line == NULL || *size == 0) {
         *size = 128;
         *line = malloc(*size);
@@ -101,4 +102,35 @@ ssize_t _getline(char **line, size_t *size)
     (*line)[pos] = '\0';
 
     return (pos + 1);
+}
+
+
+int set_env_variable(const char *variable, const char *value, int overwrite)
+{
+    if (variable == NULL || value == NULL) {
+        fprintf(stderr, "setenv: Missing argument\n");
+        return -1;
+    }
+
+    if (setenv(variable, value, overwrite) == -1) {
+        perror("setenv");
+        return -1;
+    }
+
+    return 0;
+}
+
+int unset_env_variable(const char *variable)
+{
+    if (variable == NULL) {
+        fprintf(stderr, "unsetenv: Missing argument\n");
+        return -1;
+    }
+
+    if (unsetenv(variable) == -1) {
+        perror("unsetenv");
+        return -1;
+    }
+
+    return 0;
 }
