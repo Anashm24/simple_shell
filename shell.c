@@ -2,7 +2,6 @@
 
 /**
  * main - Entry point for the shell program
- *
  * Return: Returns 0 on success, or status of the non_interactive_mode
  */
 int main(void)
@@ -107,6 +106,5 @@ while (count < 20)
 result[count] = NULL;
 count++;
 }
-
 return (result);
 }
