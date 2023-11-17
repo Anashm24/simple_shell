@@ -32,11 +32,13 @@ void write_error(char *command);
 void _exit_error(char *number);
 void print_env_var(void);
 void _getline_error(char *line);
-
-
+int _setenv(const char *variable, const char *value);
+int _unsetenv(const char *variable);
+int environ_size(void);
 char *_strdup(const char *src);
-int _strlen(char *str);
+int _strlen(const char *str);
 int _strcmp(char *s1, char *s2);
 void free_array(char **array);
+int environ_size(void);
 
 #endif

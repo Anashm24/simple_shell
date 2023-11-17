@@ -62,6 +62,28 @@ void non_inter_md(char *token, int *status)
 			print_env_var();
 			*status = 0;
 		}
+		else if (!_strcmp(single_command[0], "setenv"))
+		{
+            if (single_command[1] && single_command[2])
+			{
+                _setenv(single_command[1], single_command[2]);
+            }
+			else
+			{
+                fprintf(stderr, "setenv: Invalid syntax\n");
+            }
+        }
+		else if (!_strcmp(single_command[0], "unsetenv"))
+		{
+            if (single_command[1])
+			{
+                _unsetenv(single_command[1]);
+            }
+			else
+			{
+                fprintf(stderr, "unsetenv: Missing variable\n");
+            }
+        }
 		else
 		_execvep(single_command, envp, status);
 	}

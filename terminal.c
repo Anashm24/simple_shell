@@ -21,6 +21,7 @@ void _myshell(void)
 		commands = split_cmd(line, " \n\t");
 		if (commands[0])
 		{
+
 			if (!_strcmp(commands[0], "exit"))
 			{
 				if (commands[1])
@@ -41,6 +42,27 @@ void _myshell(void)
 				print_env_var();
 				status = 0;
 			}
+			else if (!_strcmp(commands[0], "setenv"))
+			{
+            if (commands[1] && commands[2])
+			{
+                _setenv(commands[1], commands[2]);
+            }
+			else
+			{
+                fprintf(stderr, "setenv: Invalid syntax\n");
+            }
+        }
+		else if (!_strcmp(commands[0], "unsetenv"))
+		{
+            if (commands[1]) {
+                _unsetenv(commands[1]);
+            }
+			else
+			{
+                fprintf(stderr, "unsetenv: Missing variable\n");
+            }
+        }
 			else
 				_execvep(commands, envp, &status);
 		}

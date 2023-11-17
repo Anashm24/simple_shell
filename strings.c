@@ -32,7 +32,7 @@ char *_strdup(const char *src)
  *
  * Return: Returns the length of the string.
  */
-int _strlen(char *str)
+int _strlen(const char *str)
 {
 	int len = 0;
 
