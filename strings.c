@@ -1,22 +1,29 @@
 #include "main.h"
 
-
-
 /**
- * _strcpy - Custom implementation of string copy.
- * @dest: Destination buffer to copy the string into.
- * @src: Source string to be copied.
+ * _strdup - Duplicates a string
+ * @src: The source string to duplicate
+ *
+ * Return: Returns a pointer(str)
  */
+char *_strdup(const char *src)
+{
+	char *str;
+	char *p;
+	int len = 0;
 
-void _strcpy(char *dest, const char *src)
-{
-while (*src != '\0')
-{
-*dest = *src;
-dest++;
-src++;
-}
-*dest = '\0';
+	while (src[len])
+		len++;
+
+	str = malloc(len + 1);
+	if (!str)
+		return (NULL);
+
+	p = str;
+	while (*src)
+		*p++ = *src++;
+	*p = '\0';
+	return (str);
 }
 
 /**
@@ -33,28 +40,6 @@ int _strlen(char *str)
 		len++;
 	return (len);
 }
-
-/**
- * _strcat - Custom implementation of string concatenation.
- * @dest: Destination buffer to concatenate the string into.
- * @src: Source string to be concatenated.
- */
-
-void _strcat(char *dest, const char *src)
-{
-while (*dest != '\0')
-{
-dest++;
-}
-while (*src != '\0')
-{
-*dest = *src;
-dest++;
-src++;
-}
-*dest = '\0';
-}
-
 
 /**
  * _strcmp - Compares two strings.
@@ -82,13 +67,13 @@ int _strcmp(char *s1, char *s2)
 
 
 /**
- * _strto_i - convert a string into an integer.
+ * _atoi - convert a string into an integer.
  *
  * @s: the string to use.
  *
  * Return: integer.
  */
-int _strto_i(char *s)
+int str_to_int(char *s)
 {
 	int sign = 1, i = 0;
 	unsigned int res = 0;
@@ -106,30 +91,4 @@ int _strto_i(char *s)
 	}
 	res *= sign;
 	return (res);
-}
-
-/**
- * _strdup - Duplicates a string
- * @src: The source string to duplicate
- *
- * Return: Returns a pointer(str)
- */
-char *_strdup(const char *src)
-{
-	char *str;
-	char *ptr;
-	int len = 0;
-
-	while (src[len])
-		len++;
-
-	str = malloc(len + 1);
-	if (!str)
-		return (NULL);
-
-	ptr = str;
-	while (*src)
-		*ptr++ = *src++;
-	*ptr = '\0';
-	return (str);
 }
