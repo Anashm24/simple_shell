@@ -8,22 +8,22 @@
  */
 char *_strdup(const char *src)
 {
-	char *str;
-	char *p;
-	int len = 0;
+char *str;
+char *p;
+int len = 0;
 
-	while (src[len])
-		len++;
+while (src[len])
+len++;
 
-	str = malloc(len + 1);
-	if (!str)
-		return (NULL);
+str = malloc(len + 1);
+if (!str)
+return (NULL);
 
-	p = str;
-	while (*src)
-		*p++ = *src++;
-	*p = '\0';
-	return (str);
+p = str;
+while (*src)
+*p++ = *src++;
+*p = '\0';
+return (str);
 }
 
 /**
@@ -34,11 +34,11 @@ char *_strdup(const char *src)
  */
 int _strlen(const char *str)
 {
-	int len = 0;
+int len = 0;
 
-	while (str[len] != '\0')
-		len++;
-	return (len);
+while (str[len] != '\0')
+len++;
+return (len);
 }
 
 /**
@@ -51,18 +51,18 @@ int _strlen(const char *str)
  */
 int _strcmp(char *s1, char *s2)
 {
-	int i = 0;
+int i = 0;
 
-	while (s1[i] != '\0' && s2[i] != '\0')
-	{
-		if (s1[i] != s2[i])
-		{
-			return (s1[i] - s2[i]);
-		}
-		i++;
-	}
+while (s1[i] != '\0' && s2[i] != '\0')
+{
+if (s1[i] != s2[i])
+{
+return (s1[i] - s2[i]);
+}
+i++;
+}
 
-	return (s1[i] - s2[i]);
+return (s1[i] - s2[i]);
 }
 
 /**
@@ -74,20 +74,20 @@ int _strcmp(char *s1, char *s2)
  */
 int str_to_int(char *s)
 {
-	int sign = 1, i = 0;
-	unsigned int res = 0;
+int sign = 1, i = 0;
+unsigned int res = 0;
 
-	while (!(s[i] <= '9' && s[i] >= '0') && s[i] != '\0')
-	{
-		if (s[i] == '-')
-			sign *= -1;
-		i++;
-	}
-	while (s[i] <= '9' && (s[i] >= '0' && s[i] != '\0'))
-	{
-		res = (res * 10) + (s[i] - '0');
-		i++;
-	}
-	res *= sign;
-	return (res);
+while (!(s[i] <= '9' && s[i] >= '0') && s[i] != '\0')
+{
+if (s[i] == '-')
+sign *= -1;
+i++;
+}
+while (s[i] <= '9' && (s[i] >= '0' && s[i] != '\0'))
+{
+res = (res * 10) + (s[i] - '0');
+i++;
+}
+res *= sign;
+return (res);
 }
