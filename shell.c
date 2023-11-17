@@ -13,7 +13,7 @@ int main(void)
 
 	if (!isatty(0))
 	{
-		while (_getline(&line, &size_line) != -1)
+		while (getline(&line, &size_line, stdin) != -1)
 		{
 			non_inter_md(line, &status);
 		}

@@ -61,7 +61,7 @@ void _myshell(void)
 ssize_t read_input(char **line, size_t *size_line)
 {
 	write(STDOUT_FILENO, "$ ", 2);
-	return (_getline(line, size_line));
+	return (getline(line, size_line, stdin));
 }
 
 /**
