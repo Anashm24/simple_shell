@@ -69,27 +69,7 @@ void execute(char **args) {
 }
 
 
-/**
- *find_newline - Finds the position of
- *the first newline character in a string.
- *@str: The input string.
- *Return: The position of the first newline character
- *or the length of the string if not found.
- */
 
-size_t find_newline(char *str)
-{
-size_t i;
-size_t len = _strlen(str);
-for (i = 0; i < len; i++)
-{
-if (str[i] == '\n')
-{
-return (i);
-}
-}
-return (len);
-}
 
 /**
  *splite_command - Splits a string into
