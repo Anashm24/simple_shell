@@ -207,4 +207,36 @@ free(args);
 }
 
 
- 
+ *non_interactive_mode - Runs the shell in
+ *non-interactive mode, reading commands from a file.
+ *@file_path: The path to the file containing commands.
+ */
+
+/**void non_interactive_mode(char *file_path)
+{
+char *line = NULL;
+size_t lenght_line = 0;
+
+FILE *file = fopen(file_path, "r");
+if (file == NULL)
+{
+perror("fopen");
+exit(EXIT_FAILURE);
+}
+while (getline(&line, &lenght_line, file) != -1)
+{
+char **args;
+size_t newline_pos = find_newline(line);
+if (newline_pos < lenght_line)
+{
+line[newline_pos] = '\0';
+}
+
+args = splite_command(line);
+execute(args);
+
+free(args);
+}
+
+fclose(file);
+}*/
