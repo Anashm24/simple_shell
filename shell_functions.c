@@ -1,36 +1,73 @@
 #include "main.h"
 
-void exit_status(char **args)
-{
-    int status = 0;
-    char *second_word;
-    second_word = args[1];
+void free_array(char **arr) {
+    int i;
+    if (arr == NULL)
+        return;
 
-    if (strcmp(args[0], "exit") == 0)
-    {
-        if(second_word == NULL)
-        {
-        free(args);
-        _exit(EXIT_SUCCESS);
-        }
-    else 
-    {
-        while (*second_word != '\0')
-        {
-            if (*second_word < '0' || *second_word > '9')
-            {
-                perror("exit: numeric argument required\n");
-                free(args);
-                return;
+    for (i = 0; arr[i] != NULL; i++) {
+        free(arr[i]); 
+    }
+
+    free(arr);  
+}
+
+void exit_status(char **args) {
+    if (args == NULL || args[0] == NULL) {
+        return; 
+    }
+
+    if (strcmp(args[0], "exit") == 0) {
+        if (args[1] == NULL) {
+           
+            free_array(args);
+            exit(EXIT_SUCCESS);
+        } else {
+           
+            char *endptr;
+            long status = strtol(args[1], &endptr, 10);
+
+            if (*endptr != '\0' && *endptr != '\n') {
+                fprintf(stderr, "exit: numeric argument required\n");
+            } else {
+                free_array(args);
+                exit((int)status);
             }
-            status = status * 10 + *second_word - '0';
-            second_word++;
         }
-        free(args);
-        _exit(status);
     }
 }
+
+
+
+
+void execute(char **args) {
+    pid_t pid;
+
+    if (args == NULL || args[0] == NULL) {
+        return;
+    }
+
+    if (strcmp(args[0], "exit") == 0) {
+        exit_status(args);
+    }
+
+    pid = fork();
+
+    if (pid == 0) {
+        if (execvp(args[0], args) == -1) {
+            perror("execvp");
+            free_array(args);
+            exit(EXIT_FAILURE);
+        }
+        exit(EXIT_SUCCESS);
+    } else if (pid < 0) {
+        perror("simple_shell");
+    } else {
+        wait(NULL);
+        free_array(args);
+    }
 }
+
 
 /**
  *find_newline - Finds the position of
@@ -103,18 +140,10 @@ return (tokens);
  *execute - Executes a command with its arguments
  *@args: An array of strings representing the command and its arguments.
  */
-void execute(char **args)
+/**void execute(char **args)
 {
 pid_t pid;
-if (args == NULL || args[0] == NULL)
-{
-return;
-}
 
-if (strcmp(args[0], "exit") == 0)
-{
-exit_status(args);
-}
 
 pid = fork();
 
@@ -133,15 +162,20 @@ perror("simple_shell");
 }
 else
 {
+    int i;
 wait(NULL);
+for (i = 0; args[i] != NULL; i++)
+        
+            free(args[i]);
+        
 }
 }
-/**
+
  *interactive_mode - Runs the shell in interactive
  *mode, accepting commands from the user.
  */
 
-void interactive_mode(void)
+/**void interactive_mode(void)
 {
 char *line = NULL;
 size_t lenght_line = 0;
@@ -172,13 +206,13 @@ free(args);
 }
 }
 
-/**
+
  *non_interactive_mode - Runs the shell in
  *non-interactive mode, reading commands from a file.
  *@file_path: The path to the file containing commands.
  */
 
-void non_interactive_mode(char *file_path)
+/**void non_interactive_mode(char *file_path)
 {
 char *line = NULL;
 size_t lenght_line = 0;
@@ -205,4 +239,4 @@ free(args);
 }
 
 fclose(file);
-}
+}*/

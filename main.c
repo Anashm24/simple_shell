@@ -39,10 +39,7 @@ continue;
 }
 }
 args = splite_command(line);
-if (strcmp(args[0], "exit") == 0)
-{
-exit_status(args);
-}
+
 execute(args);
 
 free(args);
