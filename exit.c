@@ -53,6 +53,7 @@ char *line, int *status)
 		exit(my_status);
 	}
 }
+
 /**
  * _getline_error - Handles getline() error.
  * @line: A pointer to the input line.
@@ -67,3 +68,37 @@ void _getline_error(char *line)
 	exit(EXIT_FAILURE);
 }
 
+ssize_t _getline(char **line, size_t *size)
+{
+    size_t pos = 0;
+    int c;
+
+    if (*line == NULL || *size == 0) {
+        *size = 128;
+        *line = malloc(*size);
+        if (*line == NULL) {
+            perror("malloc");
+            return (-1);
+        }
+    }
+
+    while ((c = getchar()) != EOF && c != '\n') {
+        if (pos == *size - 1) {
+            *size *= 2;
+            *line = realloc(*line, *size);
+            if (*line == NULL) {
+                perror("realloc");
+                return -1;
+            }
+        }
+        (*line)[pos++] = c;
+    }
+
+    if (c == EOF && pos == 0) {
+        return (-1);
+    }
+
+    (*line)[pos] = '\0';
+
+    return (pos + 1);
+}

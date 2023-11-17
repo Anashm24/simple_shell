@@ -42,8 +42,8 @@ void non_inter_md(char *token, int *status)
 	single_command = split_cmd(token, " \t");
 	if (single_command[0])
 	{
-		if (!_strcmp(single_command[0], "exit"))
-		{
+	 if (!_strcmp(single_command[0], "exit"))
+	{
 			if (single_command[1])
 			{
 				int my_status = str_to_int(single_command[1]);
