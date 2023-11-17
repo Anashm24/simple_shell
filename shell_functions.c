@@ -1,183 +1,122 @@
 #include "main.h"
 
-
-
 /**
- *find_newline - Finds the position of
- *the first newline character in a string.
- *@str: The input string.
- *Return: The position of the first newline character
- *or the length of the string if not found.
+ * exit_status - Handles the exit status for a command.
+ * @my_status: The status to check.
+ * @single_command: The command arguments.
+ * @token: A pointer to dynamically allocated memory.
+ * @status: A pointer to an int to hold the status value.
+ *
+ * Return: void.
  */
-
-size_t find_newline(char *str)
+void exit_status(int my_status, char **single_command, char **token,
+						int *status)
 {
-size_t i;
-size_t len = _strlen(str);
-for (i = 0; i < len; i++)
-{
-if (str[i] == '\n')
-{
-return (i);
-}
-}
-return (len);
-}
-
-/**
- *splite_command - Splits a string into
- *an array of tokens based on whitespace characters.
- *@line: The input string to be split.
- *Return: An array of tokens.
- */
-
-char **splite_command(char *line)
-{
-int buffer_size = MAX_INPUT_SIZE;
-int index = 0;
-char **tokens = malloc(buffer_size * sizeof(char *));
-char *token;
-
-if (!tokens)
-{
-perror("malloc");
-exit(EXIT_FAILURE);
-}
-
-token = strtok(line, " \t\n\r\a");
-
-while (token != NULL)
-{
-tokens[index] = token;
-index++;
-
-if (index >= buffer_size)
-{
-buffer_size += MAX_INPUT_SIZE;
-tokens = realloc(tokens, buffer_size * (sizeof(char *)));
-if (!tokens)
-{
-perror("realloc");
-exit(EXIT_FAILURE);
-}
-}
-
-token = strtok(NULL, " \t\n\r\a");
-}
-
-tokens[index] = NULL;
-return (tokens);
-}
-
-void free_array(char **array)
-{
-	int i;
-
-	if (!array)
-		return;
-	for (i = 0; array[i] != NULL; i++)
+	if (my_status == -1 ||
+		(my_status == 0 && single_command[1][0] != '0') ||
+		my_status < 0)
 	{
-		free(array[i]);
+		write_exit_error(single_command[1]);
+		*status = 2;
+	}
+	else
+	{
+		free(*token);
+		free_arr(single_command);
+		exit(my_status);
 	}
 }
 
-
-void execute(char **args)
+/**
+ * custom_exit - Handles custom exit statuses for a command.
+ * @my_status: The exit status to check.
+ * @commands: The array containing the command and its arguments.
+ * @line: A pointer to the input line.
+ * @status: A pointer to an int to hold the return status value.
+ *
+ * Return: void.
+ */
+void custom_exit(int my_status, char **commands,
+						char *line, int *status)
 {
-pid_t pid;
-
-pid = fork();
-
-if (pid == 0)
-{
-if (execvp(args[0], args) == -1)
-{
-perror("./hsh");
-free_array(args);
-free(args);
+	if (my_status == -1 ||
+		(my_status == 0 && commands[1][0] != '0') ||
+		my_status < 0)
+	{
+		perror("commands[1]");
+		*status = 2;
+	}
+	else
+	{
+		free(line);
+		free_arr(commands);
+		exit(my_status);
+	}
 }
-exit(EXIT_SUCCESS);
-}
-else if (pid < 0)
+/**
+ * _getline_error - Handles getline() error.
+ * @line: A pointer to the input line.
+ *
+ * Return: void.
+ */
+void _getline_error(char *line)
 {
-perror("simple_shell");
-}
-else
-{
-int status;
-waitpid(pid, &status, 0);
-
-}
+	perror("getline");
+	free(line);
+	line = NULL;
+	exit(EXIT_FAILURE);
 }
 
 /**
- *interactive_mode - Runs the shell in interactive
- *mode, accepting commands from the user.
+ * _getline - Reads a line of text from a file descriptor.
+ * @line: A pointer to the buffer where the line will be stored.
+ * @n_ch: A pointer to the size of the buffer.
+ * @fd: The file descriptor to read from.
+ *
+ * Return: If the line is read successfully, returns the number of characters
+ *         read. If an error occurs, returns -1. If the end of the file is
+ *         reached before any characters are read, returns 0.
  */
 
-void interactive_mode(void)
+ssize_t _getline(char **line, size_t *n_ch, int fd)
 {
-char *line = NULL;
-size_t lenght_line = 0;
-size_t newline_pos;
+char character;
+size_t i = 0;
+int ret;
 
-while (1)
+if (*line == NULL || n_ch == NULL)
 {
-char **args;
-write(STDOUT_FILENO, "$ ", 2);
+*n_ch = 80;
+*line = malloc(sizeof(char) * (*n_ch));
 
-if (getline(&line, &lenght_line, stdin) == -1)
+if (*line == NULL)
 {
-write(STDOUT_FILENO, "\n", 1);
-free(line);
-exit(EXIT_SUCCESS);
-}
-
-newline_pos = find_newline(line);
-if (newline_pos < lenght_line)
-{
-line[newline_pos] = '\0';
-}
-
-args = splite_command(line);
-execute(args);
-
-free(args);
+perror("malloc failed");
+return (-1);
 }
 }
 
-/**
- *non_interactive_mode - Runs the shell in
- *non-interactive mode, reading commands from a file.
- *@file_path: The path to the file containing commands.
- */
-
-void non_interactive_mode(char *file_path)
+while ((ret = read(fd, &character, 1)) > 0)
 {
-char *line = NULL;
-size_t lenght_line = 0;
+(*line)[i] = character;
+i++;
 
-FILE *file = fopen(file_path, "r");
-if (file == NULL)
+if (i > *n_ch)
 {
-perror("fopen");
-exit(EXIT_FAILURE);
+*n_ch *= 2;
+*line = realloc(*line, *n_ch);
+if (*line == NULL)
+{
+perror("realloc failed");
+return (-1);
 }
-
-while (getline(&line, &lenght_line, file) != -1)
-{
-char **args;
-size_t newline_pos = find_newline(line);
-if (newline_pos < lenght_line)
-{
-line[newline_pos] = '\0';
 }
-
-args = splite_command(line);
-execute(args);
-
-free(args);
+if (character == '\n')
+break;
 }
+if (ret == 0 && i == 0)
+return (-1);
 
-fclose(file);
+(*line)[i] = '\0';
+return (i);
 }
