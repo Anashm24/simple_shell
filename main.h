@@ -38,9 +38,16 @@ int environ_size(void);
 char *_strdup(const char *src);
 int _strlen(const char *str);
 int _strcmp(char *s1, char *s2);
+
 void free_array(char **array);
 int environ_size(void);
 int cd_builtin(char *path);
-void setenv_condition(char **single_command);
+int _setenv_add(const char *variable, const char *value);
+int _setenv_update(const char *variable, const char *value,
+char *existing_value, int variable_length);
+void handle_exit(char **commands, char *line, int *status);
+void handle_cd(char **commands, int *status);
+void handle_setenv(char **commands);
+void handle_env(int *status);
 
 #endif
